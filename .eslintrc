@@ -1,0 +1,15 @@
+{
+  "extends": "eslint:recommended",
+  "env": {
+    "node": 1,
+    "mocha": true,
+    "es6": true
+  },
+  "parser": "espree",
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "defaultParams": true
+  },
+  "rules": {
+  }
+}
