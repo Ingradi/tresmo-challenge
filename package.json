@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --reporter spec test/**/*.js"
+    "test": "mocha --reporter spec test/**/*.js",
+    "start": "node server.js"
   },
   "author": "Natalia Sattler",
   "license": "MIT",

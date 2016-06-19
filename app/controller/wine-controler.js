@@ -15,7 +15,9 @@ module.exports = function() {
 				.find()
 				.exec()
 				.then(function(wines) {
-					res.send(wines);
+					res.send(wines.map(function (wine) {
+						return wine.toObject();
+					}));
 					return next();
 				})
 				.catch(function(error) {

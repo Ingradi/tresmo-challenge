@@ -26,7 +26,7 @@ describe("Wine controller", function() {
 	});
 
 	describe("Find wines", function () {
-		var wines = [{id: 1}, {id: 2}, {id: 3}];
+		var wines = [new Wine(), new Wine(), new Wine()];
 		var request = {};
 		var findStub = {};
 
@@ -41,7 +41,12 @@ describe("Wine controller", function() {
 			};
 
 			findStub = sinon.stub(Wine, 'find');
-			findStub.returns({exec: function() {return Promise.resolve(wines);}});
+			findStub.returns({exec: function() {
+				wines.forEach((wine, index) => {
+					wine._id = index + 1;
+				});
+				return Promise.resolve(wines);
+			}});
 			done();
 		});
 
@@ -84,7 +89,7 @@ describe("Wine controller", function() {
 
 		it("should send list of found wines", function() {
 			return wineController.findWines(request, response, nextCallback).then(function() {
-				expect(response.send).to.have.been.calledWith(wines);
+				expect(response.send).to.have.been.calledWith([{id: 1}, {id: 2}, {id: 3}]);
 			});
 		});
 
