@@ -1,5 +1,6 @@
 var Wine = require('../model/wine');
 var helper = require("./helper");
+var errors = require("./errors");
 
 module.exports = function() {
 	'use strict';
@@ -28,18 +29,55 @@ module.exports = function() {
 					res.send(wine.toObject());
 					return next();
 				}).catch(function(error) {
-					var result = helper.convertToValidationError(error);
-					return next(result);
+					return next(helper.convertToValidationError(error));
 				});
 		},
-		updateWine: function (req, res, next) {
-			next();
+		modifyWine: function (req, res, next) {
+			return Wine.findById(req.params.id)
+				.then(function (wine) {
+					if (wine === null) {
+						return Promise.reject("NOT_FOUND");
+					}
+					return wine.updateWith(req.body);
+				}).then(function (wine) {
+					res.send(wine.toObject());
+					return next();
+				}).catch(function (error) {
+					if (error === "NOT_FOUND") {
+						return next(new errors.NotFoundError());
+					}
+					return next(helper.convertToValidationError(error));
+				})
 		},
 		getWine: function (req, res, next) {
-			next();
+			return Wine.findById(req.params.id)
+				.then(function (wine) {
+					if (wine === null) {
+						return Promise.reject("NOT_FOUND");
+					}
+					res.send(wine.toObject());
+					return next();
+				}).catch(function (error) {
+					if (error === "NOT_FOUND") {
+						return next(new errors.NotFoundError());
+					}
+					return next(error);
+				});
 		},
 		deleteWine: function (req, res, next) {
-			next();
+			return Wine.findByIdAndRemove(req.params.id)
+				.then(function (wine) {
+					if (wine === null) {
+						return Promise.reject("NOT_FOUND");
+					}
+					res.send({success: true});
+					return next();
+				}).catch(function (error) {
+					if (error === "NOT_FOUND") {
+						return next(new errors.NotFoundError());
+					}
+					return next(error);
+				});
 		}
 	};
 }();

@@ -20,6 +20,7 @@
   "dependencies": {
     "mongoose": "4.5.0",
     "mongoose-sequence": "3.0.2",
-    "restify": "4.1.1"
+    "restify": "4.1.1",
+    "xss-clean": "0.1.1"
   }
 }

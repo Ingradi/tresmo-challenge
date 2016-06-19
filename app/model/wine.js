@@ -43,5 +43,16 @@ module.exports = function() {
 		return new WineQuery(this.model('wine'));
 	};
 
+	wineSchema.methods.updateWith = function (modifications) {
+		if (!modifications || Object.keys(modifications).length === 0) {
+			return Promise.resolve(this);
+		}
+		var item = this;
+		Object.keys(modifications).forEach(function(key) {
+			item[key] = modifications[key];
+		});
+		return this.save();
+	};
+
 	return mongoose.model('wine', wineSchema);
 }();

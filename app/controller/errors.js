@@ -14,7 +14,21 @@ function ValidationError(message) {
 	delete this.body.code;
 	delete this.body.message;
 }
-
 util.inherits(ValidationError, restify.RestError);
 
+function NotFoundError() {
+	restify.RestError.call(this, {
+		restCode: 'UNKNOWN_OBJECT',
+		statusCode: 400,
+		message: "",
+		constructorOpt: NotFoundError
+	});
+	this.name = 'UNKNOWN_OBJECT';
+	this.body.error = this.body.code;
+	delete this.body.code;
+	delete this.body.message;
+}
+util.inherits(NotFoundError, restify.RestError);
+
 module.exports.ValidationError = ValidationError;
+module.exports.NotFoundError = NotFoundError;

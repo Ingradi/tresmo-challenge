@@ -1,6 +1,10 @@
 'use strict';
 
-var expect = require('chai').expect;
+var chai = require("chai");
+var sinon = require("sinon");
+var sinonChai = require("sinon-chai");
+var expect = chai.expect;
+
 var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
@@ -29,21 +33,6 @@ var testWines = [{
 ];
 
 describe("Wine model", function() {
-	// before(function(done) {
-	// 	if (mongoose.connection.db) {
-	// 		return done();
-	// 	}
-	// 	mongoose.connect('mongodb://localhost/wine-test', done);
-	// });
-	//
-	// after(function(done){
-	// 	mongoose.connection.db.dropDatabase(function() {
-	// 		mongoose.connection.db.close(function() {
-	// 			done();
-	// 		});
-	// 	});
-	// });
-
 	describe("Validating wine", function () {
 		it("should have errors when name is undefined", function(done){
 			var wine = new Wine({
@@ -278,6 +267,27 @@ describe("Wine model", function() {
 			});
 		});
 
+		it("should return null if wine id is unknown", function () {
+			return Wine.findById(2000).then(function(wine) {
+				expect(wine).to.be.null;
+			});
+		});
+
+		it("should find and remove wine by id", function () {
+			return Wine.findByIdAndRemove(existingWines[0]._id).then(function(wine) {
+				expect(wine._id).to.be.equal(existingWines[0]._id);
+				return Wine.findById(wine._id).then(function (data) {
+					expect(data).to.be.null;
+				});
+			});
+		});
+
+		it("should not try to remove wine with unknown id", function () {
+			return Wine.findByIdAndRemove(1000).then(function(wine) {
+				expect(wine).to.be.null;
+			});
+		});
+
 		it("should find all wines if no query is provided", function() {
 			return Wine.query().find().then(function (wines) {
 				expect(wines.length).to.equal(existingWines.length);
@@ -376,5 +386,53 @@ describe("Wine model", function() {
 		it("should transform model to simple object with id property", function () {
 			expect(existingWine.toObject()).to.be.eql(Object.assign(testWines[0], {id: existingWine._id}));
 		})
+	});
+
+	describe("Updating existing wine", function() {
+		var existingWine = {};
+		var saveSpy = {};
+		beforeEach(function() {
+			saveSpy = sinon.spy(mongoose.Model.prototype, "save");
+			var wine = new Wine(testWines[0]);
+			return wine.save().then(function () {
+				existingWine = wine;
+				saveSpy.reset();
+			});
+		});
+
+		afterEach(function(){
+			mongoose.Model.prototype.save.restore();
+			return Wine.remove({}).then(function () {
+				existingWine = {};
+			});
+		});
+
+		it("should do nothing if modifications are empty", function () {
+			return existingWine.updateWith().then(function () {
+				expect(saveSpy).not.to.have.been.called;
+			});
+		});
+
+		it("should update single property", function () {
+			return existingWine.updateWith({year: 1999}).then(function () {
+				expect(saveSpy).to.have.been.called;
+				expect(existingWine.year).to.be.equal(1999);
+			});
+		});
+
+		it("should update multiple properties", function () {
+			return existingWine.updateWith({year: 1999, name: "New name"}).then(function () {
+				expect(saveSpy).to.have.been.called;
+				expect(existingWine.year).to.be.equal(1999);
+				expect(existingWine.name).to.be.equal("New name");
+			});
+		});
+
+		it("should run validations and not save invalid values", function () {
+			return existingWine.updateWith({name: ""}).catch(function (error) {
+				expect(saveSpy).not.to.have.been.called;
+				expect(error.errors["name"].kind).to.be.equal("required");
+			});
+		});
 	});
 });
