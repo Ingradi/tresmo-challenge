@@ -1,6 +1,6 @@
+"use strict";
 
 module.exports = function(model) {
-	'use strict';
 	return {
 		query: {},
 		byName: function (name) {
@@ -16,9 +16,10 @@ module.exports = function(model) {
 			return this;
 		},
 		byYear: function (year) {
-			if (year && typeof year === "number") {
-				Object.assign(this.query, {year: year});
+			if (!year || isNaN(year)) {
+				return this;
 			}
+			Object.assign(this.query, {year: parseInt(year)});
 			return this;
 		},
 		byType: function (type) {
@@ -27,8 +28,8 @@ module.exports = function(model) {
 			}
 			return this;
 		},
-		find: function(cb) {
-			return model.find(this.query, cb);
+		find: function(callback) {
+			return model.find(this.query, callback);
 		}
 	};
 };

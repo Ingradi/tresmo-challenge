@@ -7,12 +7,16 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --reporter spec test/**/*.js"
+    "test": "mocha --reporter spec test/**/*.js",
+    "test:integration": "mocha --reporter spec integration-test/**/*.js",
+    "start": "nf start"
   },
   "author": "Natalia Sattler",
   "license": "MIT",
   "devDependencies": {
     "chai": "3.5.0",
+    "chai-http": "3.0.0",
+    "foreman": "1.4.1",
     "mocha": "2.5.3",
     "sinon": "1.17.4",
     "sinon-chai": "2.8.0"
@@ -20,6 +24,7 @@
   "dependencies": {
     "mongoose": "4.5.0",
     "mongoose-sequence": "3.0.2",
-    "restify": "4.1.1"
+    "restify": "4.1.1",
+    "xss-clean": "0.1.1"
   }
 }

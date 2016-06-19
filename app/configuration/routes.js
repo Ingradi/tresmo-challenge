@@ -1,14 +1,11 @@
+"use strict";
 
-module.exports = function (server) {
-	'use strict';
+module.exports = (server) => {
+	var wineController =  require("../controller/wine-controler");
 
-	// server.get('/status', API.ping.get);
-	// server.get('/', API.ping.get);
-	//
-	// // generic fall through routes
-	// server.get( '/:model', API.Generic.getAll);
-	// server.get( '/:model/:id', API.Generic.get);
-	// server.post('/:model', API.Generic.post);
-	// server.put( '/:model/:id', API.Generic.put);
-	// server.del( '/:model/:id', API.Generic.del);
+	server.get("/wines", wineController.findWines);
+	server.post("/wines", wineController.addWine);
+	server.put("/wines/:id", wineController.modifyWine);
+	server.get("/wines/:id", wineController.getWine);
+	server.del("/wines/:id", wineController.deleteWine);
 };
