@@ -22,6 +22,7 @@ module.exports = function() {
 	routes(server);
 
 	var port = process.env.PORT | "8080";
+	console.log("TEST");
 	server.listen(port, () => {
 		console.log("%s listening at %s", server.name, server.url);
 	});
