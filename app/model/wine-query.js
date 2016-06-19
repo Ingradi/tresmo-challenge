@@ -16,9 +16,10 @@ module.exports = function(model) {
 			return this;
 		},
 		byYear: function (year) {
-			if (year && typeof year === "number") {
-				Object.assign(this.query, {year: year});
+			if (!year || isNaN(year)) {
+				return this;
 			}
+			Object.assign(this.query, {year: parseInt(year)});
 			return this;
 		},
 		byType: function (type) {

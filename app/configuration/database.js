@@ -3,9 +3,14 @@ module.exports = function (server) {
 	'use strict';
 
 	var mongoose = require('mongoose');
+	mongoose.Promise = global.Promise;
+
 	var mongoClean = require("../utils/mongo-clean-middleware");
 
-	var dbURI = 'mongodb://localhost/wine-app';
+	var dbURI = process.env.MONGODB_URI;
+	if (!dbURI || dbURI.length === 0) {
+		throw new Error("No mongodb uri specified! Please set MONGODB_URI environment variable before running this app.");
+	}
 	mongoose.connect(dbURI);
 
 	mongoose.connection.on('connected', function () {

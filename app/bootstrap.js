@@ -14,6 +14,10 @@ module.exports = function() {
 	server.use(Restify.queryParser());
 	server.use(Restify.bodyParser({ mapParams: false }));
 	server.use(xss());
+	server.use(function (req, res, next) {
+		res.charSet("utf-8");
+		next();
+	});
 
 	database(server);
 	routes(server)
@@ -21,4 +25,6 @@ module.exports = function() {
 	server.listen(8080, function() {
 		console.log('%s listening at %s', server.name, server.url);
 	});
+
+	return server;
 };

@@ -79,9 +79,18 @@ describe("Wine query builder", function() {
 		expect(query).to.eql({});
 	});
 
-	it("should add year to query", function () {
+	it("should add numeric year to query", function () {
 		var query = (new WineQuery(model))
 			.byYear(2000)
+			.query;
+		expect(query).to.eql({
+			year: 2000
+		});
+	});
+
+	it("should add string year to query", function () {
+		var query = (new WineQuery(model))
+			.byYear("2000")
 			.query;
 		expect(query).to.eql({
 			year: 2000
