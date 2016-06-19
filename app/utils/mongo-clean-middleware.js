@@ -1,6 +1,7 @@
+"use strict";
 
 module.exports = function () {
-	var clean = function(data) {
+	var clean = (data) => {
 		if (!data) {
 			return data;
 		}

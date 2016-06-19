@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
 var chai = require("chai");
 var sinon = require("sinon");
 var expect = chai.expect;
 var cleaner = require("../../app/utils/mongo-clean-middleware")();
 
-describe("Mongo clean middleware", function() {
+describe("Mongo clean middleware", () => {
 	var nextCallback = {};
 	var testDirtyContent = {
 		key1: "key1",
@@ -17,12 +17,12 @@ describe("Mongo clean middleware", function() {
 		key2: "key2",
 		key3: "key3"
 	};
-	beforeEach(function(done) {
+	beforeEach((done) => {
 		nextCallback = sinon.stub();
 		done();
 	});
 
-	it("should remove all $ signs from request body", function (done) {
+	it("should remove all $ signs from request body", (done) => {
 		var request = {
 			body: testDirtyContent
 		};
@@ -32,7 +32,7 @@ describe("Mongo clean middleware", function() {
 		done();
 	});
 
-	it("should leave request body as is if no $ sign is found", function (done) {
+	it("should leave request body as is if no $ sign is found", (done) => {
 		var request = {
 			body: testCleanContent
 		};
@@ -42,7 +42,7 @@ describe("Mongo clean middleware", function() {
 		done();
 	});
 
-	it("should remove all $ signs from request parameters", function (done) {
+	it("should remove all $ signs from request parameters", (done) => {
 		var request = {
 			params: testDirtyContent
 		};
@@ -52,7 +52,7 @@ describe("Mongo clean middleware", function() {
 		done();
 	});
 
-	it("should leave request parameter as is if no $ sign is found", function (done) {
+	it("should leave request parameter as is if no $ sign is found", (done) => {
 		var request = {
 			params: testCleanContent
 		};
@@ -62,7 +62,7 @@ describe("Mongo clean middleware", function() {
 		done();
 	});
 
-	it("should remove all $ signs from request query", function (done) {
+	it("should remove all $ signs from request query", (done) => {
 		var request = {
 			query: testDirtyContent
 		};
@@ -72,7 +72,7 @@ describe("Mongo clean middleware", function() {
 		done();
 	});
 
-	it("should leave request query as is if no $ sign is found", function (done) {
+	it("should leave request query as is if no $ sign is found", (done) => {
 		var request = {
 			query: testCleanContent
 		};
@@ -82,7 +82,7 @@ describe("Mongo clean middleware", function() {
 		done();
 	});
 
-	it("should remove all $ signs from request body, parameters, query", function (done) {
+	it("should remove all $ signs from request body, parameters, query", (done) => {
 		var request = {
 			query: testDirtyContent,
 			params: testDirtyContent,

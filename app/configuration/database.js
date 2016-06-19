@@ -1,8 +1,7 @@
+"use strict";
 
-module.exports = function (server) {
-	'use strict';
-
-	var mongoose = require('mongoose');
+module.exports = (server) => {
+	var mongoose = require("mongoose");
 	mongoose.Promise = global.Promise;
 
 	var mongoClean = require("../utils/mongo-clean-middleware");
@@ -13,21 +12,21 @@ module.exports = function (server) {
 	}
 	mongoose.connect(dbURI);
 
-	mongoose.connection.on('connected', function () {
-		console.log('Mongoose default connection open to ' + dbURI);
+	mongoose.connection.on("connected", () => {
+		console.log("Mongoose default connection open to " + dbURI);
 	});
 
-	mongoose.connection.on('error', function (err) {
-		console.log('Mongoose default connection error: ' + err);
+	mongoose.connection.on("error", (err) => {
+		console.log("Mongoose default connection error: " + err);
 	});
 
-	mongoose.connection.on('disconnected', function () {
-		console.log('Mongoose default connection disconnected');
+	mongoose.connection.on("disconnected", () => {
+		console.log("Mongoose default connection disconnected");
 	});
 
-	process.on('SIGINT', function() {
-		mongoose.connection.close(function () {
-			console.log('Mongoose default connection disconnected through app termination');
+	process.on("SIGINT", function() {
+		mongoose.connection.close(() => {
+			console.log("Mongoose default connection disconnected through app termination");
 			process.exit(0);
 		});
 	});

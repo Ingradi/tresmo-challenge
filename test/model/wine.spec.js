@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
 var chai = require("chai");
 var sinon = require("sinon");
 var expect = chai.expect;
 
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
 
@@ -31,22 +31,23 @@ var testWines = [{
 	}
 ];
 
-describe("Wine model", function() {
-	describe("Validating wine", function () {
-		it("should have errors when name is undefined", function(done){
+describe("Wine model", () => {
+	describe("Validating wine", () => {
+		it("should have errors when name is undefined", () => {
 			var wine = new Wine({
 				year: 2013,
 				country: "France",
 				type: "red",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['name'].kind).to.be.equal('required');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["name"].kind).to.be.equal("required");
 			});
 		});
 
-		it("should have errors when name is empty", function(done){
+		it("should have errors when name is empty", () => {
 			var wine = new Wine({
 				name: "",
 				year: 2013,
@@ -54,26 +55,28 @@ describe("Wine model", function() {
 				type: "red",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['name'].kind).to.be.equal('required');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["name"].kind).to.be.equal("required");
 			});
 		});
 
-		it("should have errors when year is empty", function(done){
+		it("should have errors when year is empty", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				country: "France",
 				type: "red",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['year'].kind).to.be.equal('required');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["year"].kind).to.be.equal("required");
 			});
 		});
 
-		it("should have errors when year is not a number", function(done){
+		it("should have errors when year is not a number", () => {
 			var wine = new Wine({
 				year: "Test",
 				name: "Cabernet sauvignon",
@@ -81,26 +84,28 @@ describe("Wine model", function() {
 				type: "red",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['year'].kind).to.be.equal('Number');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["year"].kind).to.be.equal("Number");
 			});
 		});
 
-		it("should have errors when country is undefined", function(done){
+		it("should have errors when country is undefined", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
 				type: "red",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['country'].kind).to.be.equal('required');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["country"].kind).to.be.equal("required");
 			});
 		});
 
-		it("should have errors when country is empty", function(done){
+		it("should have errors when country is empty", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
@@ -108,26 +113,28 @@ describe("Wine model", function() {
 				type: "red",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['country'].kind).to.be.equal('required');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["country"].kind).to.be.equal("required");
 			});
 		});
 
-		it("should have errors when type is undefined", function(done){
+		it("should have errors when type is undefined", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
 				country: "France",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['type'].kind).to.be.equal('required');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["type"].kind).to.be.equal("required");
 			});
 		});
 
-		it("should have errors when type is empty", function(done){
+		it("should have errors when type is empty", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
@@ -135,13 +142,14 @@ describe("Wine model", function() {
 				type: "",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['type'].kind).to.be.equal('required');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["type"].kind).to.be.equal("required");
 			});
 		});
 
-		it("should have errors when type is not valid", function(done){
+		it("should have errors when type is not valid", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
@@ -149,13 +157,14 @@ describe("Wine model", function() {
 				type: "illegal type",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error.errors['type'].kind).to.be.equal('enum');
-				done();
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["type"].kind).to.be.equal("enum");
 			});
 		});
 
-		it("should have no errors when type is 'red'", function(done){
+		it("should have no errors when type is 'red'", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
@@ -163,13 +172,14 @@ describe("Wine model", function() {
 				type: "red",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error).to.be.empty;
-				done();
+			return wine.validate().then((data) => {
+				expect(data).to.be.empty;
+			}).catch((error) => {
+				throw error;
 			});
 		});
 
-		it("should have no errors when type is 'white'", function(done){
+		it("should have no errors when type is 'white'", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
@@ -177,13 +187,14 @@ describe("Wine model", function() {
 				type: "white",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error).to.be.empty;
-				done();
+			return wine.validate().then((data) => {
+				expect(data).to.be.empty;
+			}).catch((error) => {
+				throw error;
 			});
 		});
 
-		it("should have no errors when type is 'rose'", function(done){
+		it("should have no errors when type is 'rose'", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
@@ -191,26 +202,28 @@ describe("Wine model", function() {
 				type: "rose",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error).to.be.empty;
-				done();
+			return wine.validate().then((data) => {
+				expect(data).to.be.empty;
+			}).catch((error) => {
+				throw error;
 			});
 		});
 
-		it("should have no errors when description is undefined", function(done){
+		it("should have no errors when description is undefined", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
 				country: "France",
 				type: "red"
 			});
-			wine.validate(function(error) {
-				expect(error).to.be.empty;
-				done();
+			return wine.validate().then((data) => {
+				expect(data).to.be.empty;
+			}).catch((error) => {
+				throw error;
 			});
 		});
 
-		it("should have no errors when description is empty", function(done){
+		it("should have no errors when description is empty", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",
 				year: 2013,
@@ -218,13 +231,14 @@ describe("Wine model", function() {
 				type: "red",
 				description: ""
 			});
-			wine.validate(function(error) {
-				expect(error).to.be.empty;
-				done();
+			return wine.validate().then((data) => {
+				expect(data).to.be.empty;
+			}).catch((error) => {
+				throw error;
 			});
 		});
 
-		it("should have no errors when name,country,year,type are not empty, year is numeric and type is valid", function(done){
+		it("should have no errors when name,country,year,type are not empty, year is numeric and type is valid", () => {
 			var wine = new Wine({
 				year: 2013,
 				name: "Cabernet sauvignon",
@@ -232,203 +246,204 @@ describe("Wine model", function() {
 				type: "red",
 				description: "The Sean Connery of red wines"
 			});
-			wine.validate(function(error) {
-				expect(error).to.be.empty;
-				done();
+			return wine.validate().then((data) => {
+				expect(data).to.be.empty;
+			}).catch((error) => {
+				throw error;
 			});
 		});
 	});
 
-	describe("Finding wines", function() {
+	describe("Finding wines", () => {
 		var existingWines = [];
-		beforeEach(function() {
+		beforeEach(() => {
 			return Promise.all(
-				testWines.map(function(item) {
+				testWines.map((item) => {
 					var wine = new Wine(item);
-					return wine.save().then(function () {
+					return wine.save().then(() => {
 						return wine;
 					});
 				})
-			).then(function(wines) {
+			).then((wines) => {
 				existingWines = wines;
 			});
 		});
 
-		afterEach(function(){
-			return Wine.remove({}).then(function () {
+		afterEach(() => {
+			return Wine.remove({}).then(() => {
 				existingWines = [];
 			});
 		});
 
-		it("should find wine by id", function () {
-			return Wine.findById(existingWines[0]._id).then(function(wine) {
+		it("should find wine by id", () => {
+			return Wine.findById(existingWines[0]._id).then((wine) => {
 				expect(wine.toObject()).to.eql(existingWines[0].toObject());
 			});
 		});
 
-		it("should return null if wine id is unknown", function () {
-			return Wine.findById(2000).then(function(wine) {
+		it("should return null if wine id is unknown", () => {
+			return Wine.findById(2000).then((wine) => {
 				expect(wine).to.be.null;
 			});
 		});
 
-		it("should find and remove wine by id", function () {
-			return Wine.findByIdAndRemove(existingWines[0]._id).then(function(wine) {
+		it("should find and remove wine by id", () => {
+			return Wine.findByIdAndRemove(existingWines[0]._id).then((wine) => {
 				expect(wine._id).to.be.equal(existingWines[0]._id);
-				return Wine.findById(wine._id).then(function (data) {
+				return Wine.findById(wine._id).then((data) => {
 					expect(data).to.be.null;
 				});
 			});
 		});
 
-		it("should not try to remove wine with unknown id", function () {
-			return Wine.findByIdAndRemove(1000).then(function(wine) {
+		it("should not try to remove wine with unknown id", () => {
+			return Wine.findByIdAndRemove(1000).then((wine) => {
 				expect(wine).to.be.null;
 			});
 		});
 
-		it("should find all wines if no query is provided", function() {
-			return Wine.query().find().then(function (wines) {
+		it("should find all wines if no query is provided", () => {
+			return Wine.query().find().then((wines) => {
 				expect(wines.length).to.equal(existingWines.length);
 			});
 		});
 
-		it("should find wines by year", function() {
+		it("should find wines by year", () => {
 			return Wine.query()
 				.byYear(1999)
 				.find()
 				.exec()
-				.then(function (wines) {
+				.then((wines) => {
 					expect(wines.length).to.equal(1);
 				});
 		});
 
-		it("should find wines by full name", function() {
+		it("should find wines by full name", () => {
 			return Wine.query()
 				.byName("Cabernet sauvignon")
 				.find()
 				.exec()
-				.then(function (wines) {
+				.then((wines) => {
 					expect(wines.length).to.equal(1);
 				});
 		});
 
-		it("should find wines by name part", function() {
+		it("should find wines by name part", () => {
 			return Wine.query()
 				.byName("Cabernet")
 				.find()
 				.exec()
-				.then(function (wines) {
+				.then((wines) => {
 					expect(wines.length).to.equal(1);
 				});
 		});
 
-		it("should find wines by type", function() {
+		it("should find wines by type", () => {
 			return Wine.query()
 				.byType("red")
 				.find()
 				.exec()
-				.then(function (wines) {
+				.then((wines) => {
 					expect(wines.length).to.equal(1);
 				});
 		});
 
-		it("should find wines by country", function() {
-			Wine.query()
+		it("should find wines by country", () => {
+			return Wine.query()
 				.byCountry("Italy")
 				.find()
 				.exec()
-				.then(function (wines) {
+				.then((wines) => {
 					expect(wines.length).to.equal(1);
 				});
 		});
 
-		it("should find wines by year, name, type and country", function() {
-			Wine.query()
+		it("should find wines by year, name, type and country", () => {
+			return Wine.query()
 				.byName("Delicious")
 				.byCountry("Italy")
 				.byType("white")
 				.byYear(1999)
 				.find()
 				.exec()
-				.then(function (wines) {
+				.then((wines) => {
 					expect(wines.length).to.equal(1);
 				});
 		});
 
-		it("should return empty list if no wines are found", function() {
-			Wine.query()
+		it("should return empty list if no wines are found", () => {
+			return Wine.query()
 				.byName("not available")
 				.find()
 				.exec()
-				.then(function (wines) {
+				.then((wines) => {
 					expect(wines.length).to.equal(0);
 				});
 		});
 	});
 
-	describe("Transforming wine model to json", function() {
+	describe("Transforming wine model to json", () => {
 		var existingWine = {};
-		beforeEach(function() {
+		beforeEach(() => {
 			var wine = new Wine(testWines[0]);
-			return wine.save().then(function () {
+			return wine.save().then(() => {
 				existingWine = wine;
 			});
 		});
 
-		afterEach(function(){
-			return Wine.remove({}).then(function () {
+		afterEach(() => {
+			return Wine.remove({}).then(() => {
 				existingWine = {};
 			});
 		});
 
-		it("should transform model to simple object with id property", function () {
-			expect(existingWine.toObject()).to.be.eql(Object.assign(testWines[0], {id: existingWine._id}));
+		it("should transform model to simple object with id property", () => {
+			return expect(existingWine.toObject()).to.be.eql(Object.assign(testWines[0], {id: existingWine._id}));
 		})
 	});
 
-	describe("Updating existing wine", function() {
+	describe("Updating existing wine", () => {
 		var existingWine = {};
 		var saveSpy = {};
-		beforeEach(function() {
+		beforeEach(() => {
 			saveSpy = sinon.spy(mongoose.Model.prototype, "save");
 			var wine = new Wine(testWines[0]);
-			return wine.save().then(function () {
+			return wine.save().then(() => {
 				existingWine = wine;
 				saveSpy.reset();
 			});
 		});
 
-		afterEach(function(){
+		afterEach(() => {
 			mongoose.Model.prototype.save.restore();
-			return Wine.remove({}).then(function () {
+			return Wine.remove({}).then(() => {
 				existingWine = {};
 			});
 		});
 
-		it("should do nothing if modifications are empty", function () {
-			return existingWine.updateWith().then(function () {
+		it("should do nothing if modifications are empty", () => {
+			return existingWine.updateWith().then(() => {
 				expect(saveSpy).not.to.have.been.called;
 			});
 		});
 
-		it("should update single property", function () {
-			return existingWine.updateWith({year: 1999}).then(function () {
+		it("should update single property", () => {
+			return existingWine.updateWith({year: 1999}).then(() => {
 				expect(saveSpy).to.have.been.called;
 				expect(existingWine.year).to.be.equal(1999);
 			});
 		});
 
-		it("should update multiple properties", function () {
-			return existingWine.updateWith({year: 1999, name: "New name"}).then(function () {
+		it("should update multiple properties", () => {
+			return existingWine.updateWith({year: 1999, name: "New name"}).then(() => {
 				expect(saveSpy).to.have.been.called;
 				expect(existingWine.year).to.be.equal(1999);
 				expect(existingWine.name).to.be.equal("New name");
 			});
 		});
 
-		it("should run validations and not save invalid values", function () {
-			return existingWine.updateWith({name: ""}).catch(function (error) {
+		it("should run validations and not save invalid values", () => {
+			return existingWine.updateWith({name: ""}).catch((error) => {
 				expect(saveSpy).not.to.have.been.called;
 				expect(error.errors["name"].kind).to.be.equal("required");
 			});

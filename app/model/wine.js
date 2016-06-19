@@ -1,10 +1,10 @@
-module.exports = function() {
-	'use strict';
+"use strict";
 
-	var mongoose = require('mongoose');
-	var autoIncrement = require('mongoose-sequence');
+module.exports = function() {
+	var mongoose = require("mongoose");
+	var autoIncrement = require("mongoose-sequence");
 	var WineQuery = require("./wine-query");
-	var Schema = require('mongoose').Schema;
+	var Schema = require("mongoose").Schema;
 
 	var wineTypes = ["red", "white", "rose"];
 
@@ -33,14 +33,14 @@ module.exports = function() {
 	}, { _id: false });
 
 	wineSchema.plugin(autoIncrement);
-	wineSchema.set('toObject', { getters: true, virtuals: false, transform: function (doc, ret, options) {
+	wineSchema.set("toObject", { getters: true, virtuals: false, transform: function (doc, ret, options) {
 		ret.id = ret._id;
 		delete ret._id;
 		delete ret.__v;
 	}});
 
 	wineSchema.statics.query = function () {
-		return new WineQuery(this.model('wine'));
+		return new WineQuery(this.model("wine"));
 	};
 
 	wineSchema.methods.updateWith = function (modifications) {
@@ -48,11 +48,9 @@ module.exports = function() {
 			return Promise.resolve(this);
 		}
 		var item = this;
-		Object.keys(modifications).forEach(function(key) {
-			item[key] = modifications[key];
-		});
+		Object.keys(modifications).forEach((key) => item[key] = modifications[key]);
 		return this.save();
 	};
 
-	return mongoose.model('wine', wineSchema);
+	return mongoose.model("wine", wineSchema);
 }();

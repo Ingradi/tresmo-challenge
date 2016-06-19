@@ -1,6 +1,6 @@
+"use strict";
 
 module.exports = function(model) {
-	'use strict';
 	return {
 		query: {},
 		byName: function (name) {
@@ -28,8 +28,8 @@ module.exports = function(model) {
 			}
 			return this;
 		},
-		find: function(cb) {
-			return model.find(this.query, cb);
+		find: function(callback) {
+			return model.find(this.query, callback);
 		}
 	};
 };

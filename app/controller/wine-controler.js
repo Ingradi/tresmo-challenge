@@ -1,12 +1,12 @@
-var Wine = require('../model/wine');
-var helper = require("./helper");
-var errors = require("./errors");
+"use strict";
 
 module.exports = function() {
-	'use strict';
+	var Wine = require("../model/wine");
+	var helper = require("./helper");
+	var errors = require("./errors");
 
 	return {
-		findWines: function (req, res, next) {
+		findWines: (req, res, next) => {
 			return Wine.query()
 				.byName(req.query.name)
 				.byCountry(req.query.country)
@@ -14,67 +14,65 @@ module.exports = function() {
 				.byYear(req.query.year)
 				.find()
 				.exec()
-				.then(function(wines) {
-					res.send(wines.map(function (wine) {
-						return wine.toObject();
-					}));
+				.then((wines) => {
+					res.send(wines.map((wine) => wine.toObject()));
 					return next();
 				})
-				.catch(function(error) {
+				.catch((error) => {
 					return next(error);
 				});
 		},
-		addWine: function (req, res, next) {
+		addWine: (req, res, next) => {
 			var wine = new Wine(req.body);
 			return wine.save()
-				.then(function () {
+				.then(() => {
 					res.send(wine.toObject());
 					return next();
-				}).catch(function(error) {
+				}).catch((error) => {
 					return next(helper.convertToValidationError(error));
 				});
 		},
-		modifyWine: function (req, res, next) {
+		modifyWine: (req, res, next) => {
 			return Wine.findById(req.params.id)
-				.then(function (wine) {
+				.then((wine) => {
 					if (wine === null) {
 						return Promise.reject("NOT_FOUND");
 					}
 					return wine.updateWith(req.body);
-				}).then(function (wine) {
+				}).then((wine) => {
 					res.send(wine.toObject());
 					return next();
-				}).catch(function (error) {
+				}).catch((error) => {
 					if (error === "NOT_FOUND") {
 						return next(new errors.NotFoundError());
 					}
 					return next(helper.convertToValidationError(error));
 				})
 		},
-		getWine: function (req, res, next) {
+		getWine: (req, res, next) => {
 			return Wine.findById(req.params.id)
-				.then(function (wine) {
+				.then((wine) => {
 					if (wine === null) {
 						return Promise.reject("NOT_FOUND");
 					}
 					res.send(wine.toObject());
 					return next();
-				}).catch(function (error) {
+				}).catch((error) => {
 					if (error === "NOT_FOUND") {
 						return next(new errors.NotFoundError());
 					}
 					return next(error);
 				});
 		},
-		deleteWine: function (req, res, next) {
+		deleteWine: (req, res, next) => {
 			return Wine.findByIdAndRemove(req.params.id)
-				.then(function (wine) {
+				.then((wine) => {
 					if (wine === null) {
 						return Promise.reject("NOT_FOUND");
 					}
 					res.send({success: true});
 					return next();
-				}).catch(function (error) {
+				}).catch((error) => {
 					if (error === "NOT_FOUND") {
 						return next(new errors.NotFoundError());
 					}
