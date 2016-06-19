@@ -24,12 +24,15 @@ module.exports = (server) => {
 		console.log("Mongoose default connection disconnected");
 	});
 
-	process.on("SIGINT", function() {
+	var closeConnection = () => {
 		mongoose.connection.close(() => {
 			console.log("Mongoose default connection disconnected through app termination");
 			process.exit(0);
 		});
-	});
+	};
+
+	process.on("SIGTERM", closeConnection);
+	process.on("SIGINT", closeConnection);
 
 	server.use(mongoClean());
 };
