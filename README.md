@@ -21,8 +21,10 @@ npm test
 npm run test:integration
 
 # set environment varibales or create an .env file with
-# MONGODB_URI=[url to your mongoDB (eg mongodb://localhost/wine-app)]
+# MONGODB_URI=[url to your mongoDB (eg mongodb://localhost/wine-app)] <-- required
 # PORT=[port for server, default 8080]
+# AUDIT_LOG_LEVEL=[log level for restify audit logs], default 'info'
+# APP_LOG_LEVEL=[log level for app], default 'info'
 
 # start the server
 npm start

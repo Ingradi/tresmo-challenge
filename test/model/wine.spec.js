@@ -91,6 +91,21 @@ describe("Wine model", () => {
 			});
 		});
 
+		it("should have errors when year is less then 1", () => {
+			var wine = new Wine({
+				year: -20,
+				name: "Cabernet sauvignon",
+				country: "France",
+				type: "red",
+				description: "The Sean Connery of red wines"
+			});
+			return wine.validate().then(() => {
+				throw new Error();
+			}).catch((error) => {
+				expect(error.errors["year"].kind).to.be.equal("min");
+			});
+		});
+
 		it("should have errors when country is undefined", () => {
 			var wine = new Wine({
 				name: "Cabernet sauvignon",

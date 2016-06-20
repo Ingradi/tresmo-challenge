@@ -5,6 +5,7 @@ module.exports = function() {
 	var xss = require("xss-clean");
 	var routes = require("./configuration/routes");
 	var database = require("./configuration/database");
+	var logger = require("./utils/logger");
 
 	var server = Restify.createServer({
 		name: "wine-app"
@@ -18,12 +19,17 @@ module.exports = function() {
 		next();
 	});
 
+	server.on('after', Restify.auditLogger({
+		log: logger.AuditLogger,
+		body: true
+	}));
+
 	database(server);
 	routes(server);
 
 	var port = process.env.PORT || "8080";
 	server.listen(port, () => {
-		console.log("%s listening at %s", server.name, server.url);
+		logger.AppLogger.info("%s listening at %s", server.name, server.url);
 	});
 
 	return server;
