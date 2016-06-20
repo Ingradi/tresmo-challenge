@@ -16,7 +16,8 @@ module.exports = function() {
 		},
 		year: {
 			type: Number,
-			required: true
+			required: true,
+			min: 1
 		},
 		country: {
 			type: String,
@@ -33,7 +34,7 @@ module.exports = function() {
 	}, { _id: false });
 
 	wineSchema.plugin(autoIncrement);
-	wineSchema.set("toObject", { getters: true, virtuals: false, transform: function (doc, ret, options) {
+	wineSchema.set("toObject", { getters: true, virtuals: false, transform: function (doc, ret) {
 		ret.id = ret._id;
 		delete ret._id;
 		delete ret.__v;

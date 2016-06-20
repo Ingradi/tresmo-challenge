@@ -2,6 +2,7 @@
 
 module.exports = (server) => {
 	var mongoose = require("mongoose");
+	var logger = require("./utils/logger");
 	mongoose.Promise = global.Promise;
 
 	var mongoClean = require("../utils/mongo-clean-middleware");
@@ -13,20 +14,20 @@ module.exports = (server) => {
 	mongoose.connect(dbURI);
 
 	mongoose.connection.on("connected", () => {
-		console.log("Mongoose default connection open to " + dbURI);
+		logger.AppLogger.info("Mongoose default connection open to " + dbURI);
 	});
 
 	mongoose.connection.on("error", (err) => {
-		console.log("Mongoose default connection error: " + err);
+		logger.AppLogger.error("Mongoose default connection error: " + err);
 	});
 
 	mongoose.connection.on("disconnected", () => {
-		console.log("Mongoose default connection disconnected");
+		logger.AppLogger.info("Mongoose default connection disconnected");
 	});
 
 	var closeConnection = () => {
 		mongoose.connection.close(() => {
-			console.log("Mongoose default connection disconnected through app termination");
+			logger.AppLogger.info("Mongoose default connection disconnected through app termination");
 			process.exit(0);
 		});
 	};

@@ -30,5 +30,25 @@ describe("Helper methods", () => {
 				});
 			});
 		});
+
+		it("should create error with markers for each invalid property", () => {
+			var invalid = new Wine({
+				name: "Name",
+				country: "Country",
+				type: "green",
+				year: -1
+			});
+			return invalid.validate().catch((errors) => {
+				var error = helper.convertToValidationError(errors);
+				expect(error.statusCode).to.equal(400);
+				expect(error.body).to.eql({
+					error: "VALIDATION_ERROR",
+					validation: {
+						type: "INVALID",
+						year: "INVALID"
+					}
+				});
+			});
+		});
 	});
 });
