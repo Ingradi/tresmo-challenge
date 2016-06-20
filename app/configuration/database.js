@@ -2,7 +2,7 @@
 
 module.exports = (server) => {
 	var mongoose = require("mongoose");
-	var logger = require("./utils/logger");
+	var logger = require("../utils/logger");
 	mongoose.Promise = global.Promise;
 
 	var mongoClean = require("../utils/mongo-clean-middleware");
