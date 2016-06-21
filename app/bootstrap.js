@@ -18,6 +18,7 @@ module.exports = function() {
 		res.charSet("utf-8");
 		next();
 	});
+	server.use(Restify.CORS());
 
 	server.on('after', Restify.auditLogger({
 		log: logger.AuditLogger,
